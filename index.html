@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List App School Task</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      width: 100%;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .circle {
+      width: 40px;
+      height: 40px;
+      background-color: #2c2c54;
+      border-radius: 50%;
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .form input, .form button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .form button {
+      background-color: #2c2c54;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .task {
+      border: 1px solid #ddd;
+      border-left: 6px solid #2c2c54;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 12px;
+      position: relative;
+      background: #fff;
+    }
+
+    .task.completed {
+      opacity: 0.7;
+      text-decoration: line-through;
+    }
+
+    .task .subject {
+      font-weight: bold;
+      color: #2c2c54;
+    }
+
+    .task .title {
+      margin: 4px 0;
+    }
+
+    .task .date {
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    .task .status {
+      position: absolute;
+      top: 10px;
+      right: 80px;
+      background-color: #27ae60;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      display: none;
+    }
+
+    .task button.delete {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background-color: transparent;
+      color: red;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .task .status {
+        top: auto;
+        bottom: 10px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="circle"></div>
+      <h2>To-Do List App School Task</h2>
+    </div>
+
+    <div class="form">
+      <input type="text" id="subject" placeholder="Masukkan jenis mata pelajaran ..." required />
+      <input type="text" id="title" placeholder="Masukkan judul tugas yang akan dikerjakan ..." />
+      <input type="date" id="dueDate" />
+      <button id="addTask">+ Simpan</button>
+    </div>
+
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    const addBtn = document.getElementById("addTask");
+    const taskList = document.getElementById("taskList");
+
+    addBtn.addEventListener("click", () => {
+      const subject = document.getElementById("subject").value.trim();
+      const title = document.getElementById("title").value.trim();
+      const dueDate = document.getElementById("dueDate").value;
+
+      if (!subject || !title || !dueDate) {
+        alert("Harap lengkapi semua data!");
+        return;
+      }
+
+      const li = document.createElement("li");
+      li.className = "task";
+
+      li.innerHTML = `
+        <div class="subject">${subject}</div>
+        <div class="title">Tugas ${title}</div>
+        <div class="date">Due Date: ${dueDate}</div>
+        <button class="delete">🗑️ Hapus</button>
+        <span class="status">Selesai</span>
+      `;
+
+      li.addEventListener("click", function (e) {
+        if (e.target.classList.contains("delete")) {
+          taskList.removeChild(li);
+        } else {
+          li.classList.toggle("completed");
+          const status = li.querySelector(".status");
+          if (li.classList.contains("completed")) {
+            status.style.display = "inline-block";
+          } else {
+            status.style.display = "none";
+          }
+        }
+      });
+
+      taskList.appendChild(li);
+
+      // Reset form
+      document.getElementById("subject").value = "";
+      document.getElementById("title").value = "";
+      document.getElementById("dueDate").value = "";
+    });
+  </script>
+</body>
+</html>
